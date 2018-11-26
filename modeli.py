@@ -1,7 +1,7 @@
 
 import sqlite3
 
-conn = sqlite3.connect('filmi.db')
+conn = sqlite3.connect('Evidenca_avtomobilov.db')
 conn.execute("PRAGMA foreign_keys = ON")
 
 def commit(fun):
