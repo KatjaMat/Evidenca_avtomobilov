@@ -8,4 +8,4 @@ Seminarska naloga pri predmetu *Podatkovne baze 1*
 
 ## ER Diagram
 
-![ER diagram](Diagram1.png)
+![ER diagram](Diagram1.jpg)
