@@ -19,49 +19,52 @@ def ustvari_tabele(cur):
     Ustvari tabele v bazi.
     """
     cur.execute("""
-        CREATE TABLE film (
-            id        INTEGER PRIMARY KEY,
-            naslov    TEXT,
-            dolzina   INTEGER,
-            leto      INTEGER,
-            ocena     REAL,
-            metascore INTEGER,
-            glasovi   INTEGER,
-            zasluzek  INTEGER,
-            opis      TEXT
-        );
-    """)
-    cur.execute("""
         CREATE TABLE oseba (
-            id  INTEGER PRIMARY KEY,
-            ime TEXT
+            id        INTEGER PRIMARY KEY,
+            ime       TEXT,
+            priimek   TEXT,
+            naslov    TEXT,
+            telefon   INTEGER,
+            emšo      INTEGER,
+
         );
     """)
     cur.execute("""
-        CREATE TABLE vloga (
-            id    INTEGER PRIMARY KEY AUTOINCREMENT,
-            naziv TEXT
+        CREATE TABLE vozilo (
+            številka šasije  INTEGER PRIMARY KEY,
+            letnik TEXT,
+            barva TEXT,
+            gorivo TEXT
         );
     """)
     cur.execute("""
-        CREATE TABLE zanr (
-            id    INTEGER PRIMARY KEY AUTOINCREMENT,
-            naziv TEXT
+        CREATE TABLE model (
+            id    INTEGER PRIMARY KEY ,
+            oblika TEXT,
+            znamka TEXT
         );
     """)
     cur.execute("""
-        CREATE TABLE nastopa (
-            film  INTEGER REFERENCES film(id),
+        CREATE TABLE podjetje (
+            id    INTEGER PRIMARY KEY ,
+            ime TEXT,
+            telefon INTEGER,
+            naslov TEXT,
+            email TEXT
+        );
+    """)
+    cur.execute("""
+        CREATE TABLE dobavlja (
+            podjetje  INTEGER REFERENCES podjetje(id),
+            model INTEGER REFERENCES model(id),
+            PRIMARY KEY (podjetje, model)
+        );
+    """)
+    cur.execute("""
+        CREATE TABLE kupi (
             oseba INTEGER REFERENCES oseba(id),
-            vloga INTEGER REFERENCES vloga(id),
-            PRIMARY KEY (film, oseba, vloga)
-        );
-    """)
-    cur.execute("""
-        CREATE TABLE pripada (
-            film INTEGER REFERENCES film(id),
-            zanr INTEGER REFERENCES zanr(id),
-            PRIMARY KEY (film, zanr)
+            vozilo INTEGER REFERENCES vozilo(številka šasije),
+            PRIMARY KEY (oseba, vozilo)
         );
     """)
 
