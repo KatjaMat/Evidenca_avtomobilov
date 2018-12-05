@@ -107,3 +107,4 @@ venv.bak/
 *.db
 *.sqlite
 *.sqlite3
+*.dia
