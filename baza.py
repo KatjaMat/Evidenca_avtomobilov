@@ -30,14 +30,7 @@ def ustvari_tabele(conn):
 
         );
     """)
-    conn.execute("""
-        CREATE TABLE vozilo (
-            številka šasije  INTEGER PRIMARY KEY,
-            letnik TEXT,
-            barva TEXT,
-            gorivo TEXT
-        );
-    """)
+
     conn.execute("""
         CREATE TABLE model (
             id    INTEGER PRIMARY KEY ,
@@ -45,6 +38,18 @@ def ustvari_tabele(conn):
             znamka TEXT
         );
     """)
+    conn.execute("""
+        CREATE TABLE vozilo (
+            številka šasije  INTEGER PRIMARY KEY,
+            letnik TEXT,
+            barva TEXT,
+            gorivo TEXT,
+            oseba INTEGER REFERENCES oseba(id),
+            model INTEGER REFERENCES model(id) NOT NULL
+
+        );
+    """)
+
     conn.execute("""
         CREATE TABLE podjetje (
             id    INTEGER PRIMARY KEY ,
@@ -61,13 +66,14 @@ def ustvari_tabele(conn):
             PRIMARY KEY (podjetje, model)
         );
     """)
-    conn.execute("""
-        CREATE TABLE kupi (
-            oseba INTEGER REFERENCES oseba(id),
-            vozilo INTEGER REFERENCES vozilo(številka šasije),
-            PRIMARY KEY (oseba, vozilo)
-        );
-    """)
+
+#    conn.execute("""
+#        CREATE TABLE kupi (
+#           oseba INTEGER REFERENCES oseba(id),
+#          vozilo INTEGER REFERENCES vozilo(številka šasije),
+#         PRIMARY KEY (oseba, vozilo)
+#    );
+#""")
 
 def uvozi_podjetja(conn):
     """
