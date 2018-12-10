@@ -1,24 +1,25 @@
 import csv
 from modeli import conn, commit
 
-@commit
-def pobrisi_tabele(cur):
+
+def pobrisi_tabele(conn):
     """
     Pobriše tabele iz baze.
     """
-    cur.execute("DROP TABLE IF EXISTS pripada;")
-    cur.execute("DROP TABLE IF EXISTS nastopa;")
-    cur.execute("DROP TABLE IF EXISTS zanr;")
-    cur.execute("DROP TABLE IF EXISTS vloga;")
-    cur.execute("DROP TABLE IF EXISTS oseba;")
-    cur.execute("DROP TABLE IF EXISTS film;")
+    conn.execute("DROP TABLE IF EXISTS dobavlja;")
+    conn.execute("DROP TABLE IF EXISTS kupi;")
+    conn.execute("DROP TABLE IF EXISTS oseba;")
+    conn.execute("DROP TABLE IF EXISTS vozilo;")
+    conn.execute("DROP TABLE IF EXISTS model;")
+    conn.execute("DROP TABLE IF EXISTS podjetje;")
 
-@commit
-def ustvari_tabele(cur):
+
+
+def ustvari_tabele(conn):
     """
     Ustvari tabele v bazi.
     """
-    cur.execute("""
+    conn.execute("""
         CREATE TABLE oseba (
             id        INTEGER PRIMARY KEY,
             ime       TEXT,
@@ -29,7 +30,7 @@ def ustvari_tabele(cur):
 
         );
     """)
-    cur.execute("""
+    conn.execute("""
         CREATE TABLE vozilo (
             številka šasije  INTEGER PRIMARY KEY,
             letnik TEXT,
@@ -37,14 +38,14 @@ def ustvari_tabele(cur):
             gorivo TEXT
         );
     """)
-    cur.execute("""
+    conn.execute("""
         CREATE TABLE model (
             id    INTEGER PRIMARY KEY ,
             oblika TEXT,
             znamka TEXT
         );
     """)
-    cur.execute("""
+    conn.execute("""
         CREATE TABLE podjetje (
             id    INTEGER PRIMARY KEY ,
             ime TEXT,
@@ -53,14 +54,14 @@ def ustvari_tabele(cur):
             email TEXT
         );
     """)
-    cur.execute("""
+    conn.execute("""
         CREATE TABLE dobavlja (
             podjetje  INTEGER REFERENCES podjetje(id),
             model INTEGER REFERENCES model(id),
             PRIMARY KEY (podjetje, model)
         );
     """)
-    cur.execute("""
+    conn.execute("""
         CREATE TABLE kupi (
             oseba INTEGER REFERENCES oseba(id),
             vozilo INTEGER REFERENCES vozilo(številka šasije),
@@ -68,27 +69,26 @@ def ustvari_tabele(cur):
         );
     """)
 
-@commit
-def uvozi_filme(cur):
+def uvozi_podjetja(conn):
     """
-    Uvozi podatke o filmih.
+    Uvozi podatke o podjetjih.
     """
-    cur.execute("DELETE FROM film;")
-    with open('podatki/film.csv') as datoteka:
+    conn.execute("DELETE FROM podjetje;")
+    with open('podatki/podjetje.csv') as datoteka:
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
         poizvedba = """
-            INSERT INTO film VALUES ({})
+            INSERT INTO podjetje VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
-            cur.execute(poizvedba, vrstica)
+            conn.execute(poizvedba, vrstica)
 
-@commit
-def uvozi_osebe(cur):
+
+def uvozi_osebe(conn):
     """
     Uvozi podatke o osebah.
     """
-    cur.execute("DELETE FROM oseba;")
+    conn.execute("DELETE FROM oseba;")
     with open('podatki/oseba.csv') as datoteka:
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
@@ -96,72 +96,73 @@ def uvozi_osebe(cur):
             INSERT INTO oseba VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
-            cur.execute(poizvedba, vrstica)
+            conn.execute(poizvedba, vrstica)
 
-@commit
-def uvozi_vloge(cur):
+
+def uvozi_vozila(conn):
     """
-    Uvozi podatke o vlogah.
+    Uvozi podatke o vozilih.
     """
-    cur.execute("DELETE FROM nastopa;")
-    cur.execute("DELETE FROM vloga;")
-    vloge = {}
-    with open('podatki/vloge.csv') as datoteka:
+    conn.execute("DELETE FROM kupi;")
+    conn.execute("DELETE FROM vozila;")
+    vozila = {}
+    with open('podatki/vozila.csv') as datoteka:
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
-        v = stolpci.index('vloga')
+        v = stolpci.index('vozila')
         poizvedba = """
             INSERT INTO nastopa VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
-        poizvedba_vloga = "INSERT INTO vloga (naziv) VALUES (?);"
+        poizvedba_vozila = "INSERT INTO vozila (naziv) VALUES (?);"
         for vrstica in podatki:
-            vloga = vrstica[v]
-            if vloga not in vloge:
-                cur.execute(poizvedba_vloga, [vloga])
-                vloge[vloga] = cur.lastrowid
-            vrstica[v] = vloge[vloga]
-            cur.execute(poizvedba, vrstica)
+            vozila = vrstica[v]
+            if vozila not in vozila:
+                conn.execute(poizvedba_vozila, [vozila])
+                vozila[vozila] = conn.lastrowid
+            vrstica[v] = vozila[vozila]
+            conn.execute(poizvedba, vrstica)
 
-@commit
-def uvozi_zanre(cur):
+
+def uvozi_modele(conn):
     """
     Uvozi podatke o žanrih.
     """
-    cur.execute("DELETE FROM pripada;")
-    cur.execute("DELETE FROM zanr;")
-    zanri = {}
-    with open('podatki/zanri.csv') as datoteka:
+    conn.execute("DELETE FROM dobavlja;")
+    conn.execute("DELETE FROM model;")
+    modeli = {}
+    with open('podatki/model.csv') as datoteka:
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
-        z = stolpci.index('zanr')
+        z = stolpci.index('model')
         poizvedba = """
             INSERT INTO pripada VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
-        poizvedba_zanr = "INSERT INTO zanr (naziv) VALUES (?);"
+        poizvedba_model = "INSERT INTO model (naziv) VALUES (?);"
         for vrstica in podatki:
-            zanr = vrstica[z]
-            if zanr not in zanri:
-                cur.execute(poizvedba_zanr, [zanr])
-                zanri[zanr] = cur.lastrowid
-            vrstica[z] = zanri[zanr]
-            cur.execute(poizvedba, vrstica)
+            model = vrstica[z]
+            if model not in modeli:
+                conn.execute(poizvedba_model, [model])
+                model[model] = conn.lastrowid
+            vrstica[z] = model[model]
+            conn.execute(poizvedba, vrstica)
 
-@commit
-def ustvari_bazo(cur):
+
+def ustvari_bazo(conn):
     """
     Opravi celoten postopek postavitve baze.
     """
-    pobrisi_tabele.nocommit(cur)
-    ustvari_tabele.nocommit(cur)
-    uvozi_filme.nocommit(cur)
-    uvozi_osebe.nocommit(cur)
-    uvozi_vloge.nocommit(cur)
-    uvozi_zanre.nocommit(cur)
+    pobrisi_tabele(conn)
+    ustvari_tabele(conn)
+    uvozi_osebe(conn)
+    uvozi_podjetja(conn)
+    uvozi_vozila(conn)
+    uvozi_modele(conn)
 
 def ustvari_bazo_ce_ne_obstaja():
     """
     Ustvari bazo, če ta še ne obstaja.
     """
-    cur = conn.execute("SELECT COUNT(*) FROM sqlite_master")
-    if cur.fetchone() == (0, ):
-        ustvari_bazo(cur)
+    with conn:
+        cur = conn.execute("SELECT COUNT(*) FROM sqlite_master")
+        if cur.fetchone() == (0, ):
+            ustvari_bazo(conn)
