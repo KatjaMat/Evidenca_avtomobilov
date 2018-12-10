@@ -19,4 +19,4 @@ def commit(fun):
     funkcija.__qualname__ = fun.__qualname__
     fun.__qualname__ += '.nocommit'
     funkcija.nocommit = fun
-return funkcija
+    return funkcija
