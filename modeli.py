@@ -34,13 +34,14 @@ def koliko_avtov():
     st, = conn.execute(poizvedba).fetchone()
     return st
 
-def podatki_vozil():
+def podatki_vozil(vnos):
     """
     Vrne podatke o vozilih.
     """
     poizvedba = """
         SELECT stevilka_sasije, letnik, barva, gorivo
         FROM vozilo
+        WHERE stevilka_sasije = vnos
     """
     return conn.execute(poizvedba).fetchall()
 
@@ -54,3 +55,14 @@ def poisci_vozilo(ime_vnos):
         WHERE stevilka_sasije = (SELECT ID FROM model WHERE znamka = ime_vnos)
     """
     return conn.execute(poizvedba, ['%' + ime_vnos + '%']).fetchall()
+
+def znamke_podjetja(ime_podjetja):
+    """
+    Poišče vse znamke, ki jih določeno podjetje dobavlja
+    """
+    poizvedba = """
+       SELECT znamka 
+       FROM model 
+       WHERE ime_podjetja = (SELECT ime FROM podjetje)
+       """
+    return conn.execute(poizvedba).fetchall()
