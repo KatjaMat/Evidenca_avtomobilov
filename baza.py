@@ -40,7 +40,7 @@ def ustvari_tabele(conn):
     """)
     conn.execute("""
         CREATE TABLE vozilo (
-            številka šasije  INTEGER PRIMARY KEY,
+            stevilka_sasije  INTEGER PRIMARY KEY,
             letnik TEXT,
             barva TEXT,
             gorivo TEXT,
@@ -70,7 +70,7 @@ def ustvari_tabele(conn):
 #    conn.execute("""
 #        CREATE TABLE kupi (
 #           oseba INTEGER REFERENCES oseba(id),
-#          vozilo INTEGER REFERENCES vozilo(številka šasije),
+#          vozilo INTEGER REFERENCES vozilo(stevilka_sasije),
 #         PRIMARY KEY (oseba, vozilo)
 #    );
 #""")

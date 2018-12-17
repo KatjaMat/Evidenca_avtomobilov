@@ -20,3 +20,37 @@ def commit(fun):
     fun.__qualname__ += '.nocommit'
     funkcija.nocommit = fun
     return funkcija
+
+def koliko_avtov():
+    """
+    Vrne stevilo avtov.
+    >>> koliko_avtov()
+    35
+    """
+    poizvedba = """
+        SELECT COUNT(*)
+        FROM vozilo
+    """
+    st, = conn.execute(poizvedba).fetchone()
+    return st
+
+def podatki_vozil():
+    """
+    Vrne podatke o vozilih.
+    """
+    poizvedba = """
+        SELECT stevilka_sasije, letnik, barva, gorivo
+        FROM vozilo
+    """
+    return conn.execute(poizvedba).fetchall()
+
+def poisci_vozilo(ime_vnos):
+    """
+    Poišče vsa vozila iste znamke.
+    """
+    poizvedba = """
+        SELECT stevilka_sasije, letnik, barva, gorivo
+        FROM vozilo
+        WHERE stevilka_sasije = (SELECT ID FROM model WHERE znamka = ime_vnos)
+    """
+    return conn.execute(poizvedba, ['%' + ime_vnos + '%']).fetchall()
