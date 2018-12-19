@@ -79,8 +79,9 @@ def podjetje():
 
 def prikazi_vozila_na_zalogi():
     """
-
+    Funkcija prešteje vozila
     """
+    return modeli.koliko_avtov()
 
 
 
