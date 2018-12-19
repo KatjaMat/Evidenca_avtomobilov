@@ -164,7 +164,7 @@ def ustvari_bazo(conn):
     uvozi_vozila(conn)
     uvozi_modele(conn)
 
-def ustvari_bazo_ce_ne_obstaja():
+def ustvari_bazo_ce_ne_obstaja(conn):
     """
     Ustvari bazo, če ta še ne obstaja.
     """
