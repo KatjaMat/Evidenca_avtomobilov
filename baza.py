@@ -1,6 +1,4 @@
 import csv
-from modeli import conn, commit
-
 
 def pobrisi_tabele(conn):
     """
@@ -21,19 +19,19 @@ def ustvari_tabele(conn):
     """
     conn.execute("""
         CREATE TABLE oseba (
-            id        INTEGER PRIMARY KEY,
+            id        INTEGER PRIMARY KEY AUTOINCREMENT,
             ime       TEXT,
             priimek   TEXT,
             naslov    TEXT,
-            telefon   INTEGER,
-            emšo      INTEGER,
+            telefon   INTEGER
+            -- emso      INTEGER
 
         );
     """)
 
     conn.execute("""
         CREATE TABLE model (
-            id    INTEGER PRIMARY KEY ,
+            id    INTEGER PRIMARY KEY AUTOINCREMENT,
             oblika TEXT,
             znamka TEXT
         );
@@ -52,7 +50,7 @@ def ustvari_tabele(conn):
 
     conn.execute("""
         CREATE TABLE podjetje (
-            id    INTEGER PRIMARY KEY ,
+            id    INTEGER PRIMARY KEY AUTOINCREMENT,
             ime TEXT,
             telefon INTEGER,
             naslov TEXT,
@@ -84,7 +82,7 @@ def uvozi_podjetja(conn):
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
         poizvedba = """
-            INSERT INTO podjetje VALUES ({})
+            INSERT INTO podjetje (ime, telefon, naslov, email) VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
             conn.execute(poizvedba, vrstica)
@@ -99,58 +97,88 @@ def uvozi_osebe(conn):
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
         poizvedba = """
-            INSERT INTO oseba VALUES ({})
+            INSERT INTO oseba (ime, priimek, naslov, telefon) VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
+            print(vrstica)
             conn.execute(poizvedba, vrstica)
 
+def uvozi_modele(conn):
+    """
+    Uvozi podatke o modelih.
+    """
+    conn.execute("DELETE FROM model;")
+    with open('podatki/model.csv') as datoteka:
+        podatki = csv.reader(datoteka)
+        stolpci = next(podatki)
+        poizvedba = """
+            INSERT INTO model (oblika, znamka) VALUES ({})
+        """.format(', '.join(["?"] * len(stolpci)))
+        for vrstica in podatki:
+            print(vrstica)
+            conn.execute(poizvedba, vrstica)
 
 def uvozi_vozila(conn):
     """
     Uvozi podatke o vozilih.
     """
-    conn.execute("DELETE FROM kupi;")
-    conn.execute("DELETE FROM vozila;")
-    vozila = {}
-    with open('podatki/vozila.csv') as datoteka:
+    conn.execute("DELETE FROM vozilo;")
+    with open('podatki/vozilo.csv') as datoteka:
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
-        v = stolpci.index('vozila')
         poizvedba = """
-            INSERT INTO nastopa VALUES ({})
+            INSERT INTO vozilo () VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
-        poizvedba_vozila = "INSERT INTO vozila (naziv) VALUES (?);"
         for vrstica in podatki:
-            vozila = vrstica[v]
-            if vozila not in vozila:
-                conn.execute(poizvedba_vozila, [vozila])
-                vozila[vozila] = conn.lastrowid
-            vrstica[v] = vozila[vozila]
+            print(vrstica)
             conn.execute(poizvedba, vrstica)
 
+# def uvozi_vozila(conn):
+#     """
+#     Uvozi podatke o vozilih.
+#     """
+#     conn.execute("DELETE FROM kupi;")
+#     conn.execute("DELETE FROM vozila;")
+#     vozila = {}
+#     with open('podatki/vozila.csv') as datoteka:
+#         podatki = csv.reader(datoteka)
+#         stolpci = next(podatki)
+#         v = stolpci.index('vozila')
+#         poizvedba = """
+#             INSERT INTO nastopa VALUES ({})
+#         """.format(', '.join(["?"] * len(stolpci)))
+#         poizvedba_vozila = "INSERT INTO vozila (naziv) VALUES (?);"
+#         for vrstica in podatki:
+#             vozila = vrstica[v]
+#             if vozila not in vozila:
+#                 conn.execute(poizvedba_vozila, [vozila])
+#                 vozila[vozila] = conn.lastrowid
+#             vrstica[v] = vozila[vozila]
+#             conn.execute(poizvedba, vrstica)
 
-def uvozi_modele(conn):
-    """
-    Uvozi podatke o žanrih.
-    """
-    conn.execute("DELETE FROM dobavlja;")
-    conn.execute("DELETE FROM model;")
-    modeli = {}
-    with open('podatki/model.csv') as datoteka:
-        podatki = csv.reader(datoteka)
-        stolpci = next(podatki)
-        z = stolpci.index('model')
-        poizvedba = """
-            INSERT INTO pripada VALUES ({})
-        """.format(', '.join(["?"] * len(stolpci)))
-        poizvedba_model = "INSERT INTO model (naziv) VALUES (?);"
-        for vrstica in podatki:
-            model = vrstica[z]
-            if model not in modeli:
-                conn.execute(poizvedba_model, [model])
-                model[model] = conn.lastrowid
-            vrstica[z] = model[model]
-            conn.execute(poizvedba, vrstica)
+
+# def uvozi_modele(conn):
+#     """
+#     Uvozi podatke o žanrih.
+#     """
+#     conn.execute("DELETE FROM dobavlja;")
+#     conn.execute("DELETE FROM model;")
+#     modeli = {}
+#     with open('podatki/model.csv') as datoteka:
+#         podatki = csv.reader(datoteka)
+#         stolpci = next(podatki)
+#         z = stolpci.index('model')
+#         poizvedba = """
+#             INSERT INTO pripada VALUES ({})
+#         """.format(', '.join(["?"] * len(stolpci)))
+#         poizvedba_model = "INSERT INTO model (naziv) VALUES (?);"
+#         for vrstica in podatki:
+#             model = vrstica[z]
+#             if model not in modeli:
+#                 conn.execute(poizvedba_model, [model])
+#                 model[model] = conn.lastrowid
+#             vrstica[z] = model[model]
+#             conn.execute(poizvedba, vrstica)
 
 
 def ustvari_bazo(conn):
