@@ -127,7 +127,7 @@ def uvozi_vozila(conn):
         podatki = csv.reader(datoteka)
         stolpci = next(podatki)
         poizvedba = """
-            INSERT INTO vozilo () VALUES ({})
+            INSERT INTO vozilo (stevilka_sasije, letnik, barva, gorivo, oseba, model) VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
             print(vrstica)
