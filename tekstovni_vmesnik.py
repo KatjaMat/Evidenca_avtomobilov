@@ -40,7 +40,8 @@ def prikazi_podatke_vozilih():
         ime = input("Vozilo s to stevilko sasije ne obstaja. Vnesi veljavno stevilko:")
     else:
         podatki = list(modeli.podatki_vozil(ime))
-    print("\nŠtevilka šasije: {0}, Letnik: {1}, Barva: {2}, Gorivo: {3}\n".format(*podatki))
+    print(podatki)
+    print("\nLetnik: {0}, Barva: {1}, Gorivo: {2}, Oseba: {3}, Model: {4}\n".format(*podatki))
 
 def pokazi_moznosti(moznosti):
     print(50 * '-')

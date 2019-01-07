@@ -16,27 +16,28 @@ def koliko_avtov():
     poizvedba = """
         SELECT COUNT(*)
         FROM vozilo
+        WHERE letnik NOT NULL
     """
     st, = conn.execute(poizvedba).fetchone()
     return st
-
+#
 def podatki_vozil(vnos):
     """
     Vrne podatke o vozilih.
     """
     poizvedba = """
-        SELECT stevilka_sasije, letnik, barva, gorivo
+        SELECT letnik, barva, gorivo, oseba, model
         FROM vozilo
-        WHERE stevilka_sasije = vnos
+        WHERE stevilka_sasije = ?
     """
-    return conn.execute(poizvedba).fetchall()
-
+    return conn.execute(poizvedba,[vnos]).fetchone()
+#
 def poisci_vozilo(ime_vnos):
     """
     Poišče vsa vozila iste znamke.
     """
     poizvedba = """
-        SELECT stevilka_sasije, letnik, barva, gorivo
+        SELECT stevilka_sasije, letnik, barva, gorivo, oseba, model
         FROM vozilo
         WHERE stevilka_sasije = (SELECT ID FROM model WHERE znamka = ime_vnos)
     """
@@ -49,6 +50,6 @@ def znamke_podjetja(ime_podjetja):
     poizvedba = """
        SELECT znamka 
        FROM model 
-       WHERE ime_podjetja = (SELECT ime FROM podjetje)
+       WHERE ime LIKE ?
        """
-    return conn.execute(poizvedba).fetchall()
+    return [znamka for znamka, in conn.execute(poizvedba,['%' + ime_podjetja + '%']).fetchall()]
