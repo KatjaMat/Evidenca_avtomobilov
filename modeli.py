@@ -49,7 +49,8 @@ def znamke_podjetja(ime_podjetja):
     """
     poizvedba = """
        SELECT znamka 
-       FROM model 
+       FROM model JOIN dobavlja ON model.id = model
+       JOIN podjetje ON podjetje = podjetje.id
        WHERE ime LIKE ?
        """
     return [znamka for znamka, in conn.execute(poizvedba,['%' + ime_podjetja + '%']).fetchall()]
