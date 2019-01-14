@@ -92,7 +92,7 @@ def nazaj():
     """
     st = False
     while not st:
-        st = input('Za nazaj napisi "True":')
+        st = input('Za nazaj klikni Enter:')
 
 def main():
     print('Pozdravljeni v bazi vozil!')
