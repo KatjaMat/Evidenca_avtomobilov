@@ -16,9 +16,9 @@ def koliko_avtov(vnos):
     poizvedba = """
         SELECT COUNT(*)
         FROM vozilo
-        WHERE gorivo = vnos
+        WHERE gorivo = ?
     """
-    return conn.execute(poizvedba, [vnos]).fetchall()
+    return conn.execute(poizvedba, [vnos]).fetchone()[0]
 #
 def podatki_vozil(vnos):
     """

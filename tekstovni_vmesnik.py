@@ -82,8 +82,8 @@ def prikazi_vozila_na_zalogi():
     """
     Funkcija prešteje vozila
     """
-    vnos = input('Izbirate lahko med: diesel, hibrid, bencin, plin: ')
-    return modeli.koliko_avtov(vnos)
+    vnos = input('Izbirate lahko med: Diesel, Hibrid, Bencin, Plin: ')
+    print(modeli.koliko_avtov(vnos))
 
 
 
