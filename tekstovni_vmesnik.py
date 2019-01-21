@@ -47,7 +47,7 @@ def pokazi_moznosti(moznosti):
     print(50 * '-')
     izbira = izberi_moznost([
         'prikaži podatke o določenih vozilih',
-        'vozila na zalogi',
+        'prešteje vozila glede na gorivo',
         'dano podjetje dobavlja ta vozila',
         'izhod',
     ])
@@ -71,9 +71,9 @@ def podjetje():
     """
     ime_podjetja = input("Vnesi ime podjetja: ")
 
-    podatki = modeli.znamke_podjetja(ime_podjetja)    
+    podatki = modeli.znamke_podjetja(ime_podjetja)   
     for podatek in podatki:
-        print("Podjetje dobavlja znamko: {}".format(list(podatek)[0]))
+        print("Podjetje dobavlja znamko: {}".format((podatek)))
 
 
 
@@ -82,7 +82,8 @@ def prikazi_vozila_na_zalogi():
     """
     Funkcija prešteje vozila
     """
-    return modeli.koliko_avtov()
+    vnos = input('Izbirate lahko med: diesel, hibrid, bencin, plin: ')
+    return modeli.koliko_avtov(vnos)
 
 
 
@@ -90,8 +91,8 @@ def nazaj():
     """
     Funkcija naredi, da se po uporabnikovi uspešni poizvedbi ne vrnemo takoj na poizvedovanje
     """
-    st = False
-    while not st:
+    st = True
+    while st:
         st = input('Za nazaj klikni Enter:')
 
 def main():

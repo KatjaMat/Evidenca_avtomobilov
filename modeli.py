@@ -7,19 +7,18 @@ conn = sqlite3.connect('Evidenca_avtomobilov.db')
 baza.ustvari_bazo_ce_ne_obstaja(conn)
 conn.execute("PRAGMA foreign_keys = ON")
 
-def koliko_avtov():
+def koliko_avtov(vnos):
     """
     Vrne stevilo avtov.
-    >>> koliko_avtov()
+    >>> koliko_avtov('plin')
     35
     """
     poizvedba = """
         SELECT COUNT(*)
         FROM vozilo
-        WHERE letnik NOT NULL
+        WHERE gorivo = vnos
     """
-    st, = conn.execute(poizvedba).fetchone()
-    return st
+    return conn.execute(poizvedba, [vnos]).fetchall()
 #
 def podatki_vozil(vnos):
     """
@@ -30,7 +29,7 @@ def podatki_vozil(vnos):
         FROM vozilo
         WHERE stevilka_sasije = ?
     """
-    return conn.execute(poizvedba,[vnos]).fetchone()
+    return conn.execute(poizvedba).fetchone()
 #
 def poisci_vozilo(ime_vnos):
     """
@@ -47,10 +46,14 @@ def znamke_podjetja(ime_podjetja):
     """
     Poišče vse znamke, ki jih določeno podjetje dobavlja
     """
-    poizvedba = """
-       SELECT znamka 
-       FROM model JOIN dobavlja ON model.id = model
-       JOIN podjetje ON podjetje = podjetje.id
-       WHERE ime LIKE ?
-       """
+    poizvedba = """SELECT znamka
+    FROM dobavlja JOIN podjetje ON dobavlja.idpodjetja = id
+    WHERE ime LIKE ?
+    """
+    #"""
+    #   SELECT znamka 
+    #   FROM model JOIN dobavlja ON model.id = model
+    #   JOIN podjetje ON podjetje = podjetje.id
+    #   WHERE ime LIKE ?
+    #"""
     return [znamka for znamka, in conn.execute(poizvedba,['%' + ime_podjetja + '%']).fetchall()]

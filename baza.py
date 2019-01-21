@@ -59,9 +59,9 @@ def ustvari_tabele(conn):
     """)
     conn.execute("""
         CREATE TABLE dobavlja (
-            podjetje  INTEGER REFERENCES podjetje(id),
-            model INTEGER REFERENCES model(id),
-            PRIMARY KEY (podjetje, model)
+            idpodjetja  INTEGER REFERENCES podjetje(id),
+            znamka TEXT REFERENCES model(znamka),
+            PRIMARY KEY (idpodjetja, znamka)
         );
     """)
 
@@ -100,7 +100,6 @@ def uvozi_osebe(conn):
             INSERT INTO oseba (ime, priimek, naslov, telefon) VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
-            print(vrstica)
             conn.execute(poizvedba, vrstica)
 
 def uvozi_modele(conn):
@@ -115,7 +114,6 @@ def uvozi_modele(conn):
             INSERT INTO model (oblika, znamka) VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
-            print(vrstica)
             conn.execute(poizvedba, vrstica)
 
 def uvozi_vozila(conn):
@@ -130,7 +128,20 @@ def uvozi_vozila(conn):
             INSERT INTO vozilo (stevilka_sasije, letnik, barva, gorivo, oseba, model) VALUES ({})
         """.format(', '.join(["?"] * len(stolpci)))
         for vrstica in podatki:
-            print(vrstica)
+            conn.execute(poizvedba, vrstica)
+
+def uvozi_dobavlja(conn):
+    """
+    Uvozi podatke za dobavlja.
+    """
+    conn.execute("DELETE FROM dobavlja;")
+    with open('podatki/dobavlja.csv') as datoteka:
+        podatki = csv.reader(datoteka)
+        stolpci = next(podatki)
+        poizvedba = """
+            INSERT INTO dobavlja (idpodjetja,znamka) VALUES ({})
+        """.format(', '.join(["?"] * len(stolpci)))
+        for vrstica in podatki:
             conn.execute(poizvedba, vrstica)
 
 # def uvozi_vozila(conn):
@@ -191,6 +202,7 @@ def ustvari_bazo(conn):
     uvozi_podjetja(conn)
     uvozi_vozila(conn)
     uvozi_modele(conn)
+    uvozi_dobavlja(conn)
 
 def ustvari_bazo_ce_ne_obstaja(conn):
     """
