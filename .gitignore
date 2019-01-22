@@ -107,5 +107,9 @@ venv.bak/
 *.db
 *.sqlite
 *.sqlite3
+
+# dia
 *.dia
-*.vscode
+
+# Visual studio code
+.vscode/
