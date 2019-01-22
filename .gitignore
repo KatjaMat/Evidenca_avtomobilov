@@ -113,3 +113,4 @@ venv.bak/
 
 # Visual studio code
 .vscode/
+.json
