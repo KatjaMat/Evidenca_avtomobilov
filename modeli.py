@@ -7,6 +7,13 @@ conn = sqlite3.connect('Evidenca_avtomobilov.db')
 baza.ustvari_bazo_ce_ne_obstaja(conn)
 conn.execute("PRAGMA foreign_keys = ON")
 
+def koliko_vseh_avtov():
+    poizvedba = """
+        SELECT COUNT(*)
+        FROM vozilo
+    """
+    return conn.execute(poizvedba, ).fetchall()[0]
+
 def koliko_avtov(vnos):
     """
     Vrne stevilo avtov.
