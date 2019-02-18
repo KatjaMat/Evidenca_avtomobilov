@@ -1,10 +1,8 @@
-from bottle import get, template, run
+from bottle import get,run,template
 import modeli
 
 @get('/')
 def glavna_stran():
-    return template('glavna_stran',
-    stevilo_avtov = modeli.koliko_vseh_avtov()
-    )
+    return template('glavna_stran')
 
 run(reloader=True,debug=True)
