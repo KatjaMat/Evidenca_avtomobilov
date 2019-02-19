@@ -1,4 +1,4 @@
-## Evidenca avtomobilov
+# Evidenca avtomobilov
 
  Avtorja:
  * Katja Bukovec
@@ -6,7 +6,7 @@
 
 Seminarska naloga pri predmetu *Podatkovne baze 1*
 
-# Opis
+## Opis
 V bazi bodo zbrani podatki o vozilih, podatkih o vozilih, njihovih lastnikih in podjetjih, ki ta vozila dobavljajo. Končni izdelek bo spletna storitev, kjer bo uporabnik lahko: 
 
 * Pogledal, katere znamke vozil dobavlja določeno podjetje.
@@ -14,6 +14,6 @@ V bazi bodo zbrani podatki o vozilih, podatkih o vozilih, njihovih lastnikih in 
 * Pogledal, koliko vozil z danim gorivom je na voljo.
 
 
-# ER Diagram
+## ER Diagram
 
 ![ER diagram](Diagram.png)
