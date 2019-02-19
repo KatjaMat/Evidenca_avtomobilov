@@ -12,7 +12,8 @@ def koliko_vseh_avtov():
         SELECT COUNT(*)
         FROM vozilo
     """
-    return conn.execute(poizvedba, ).fetchall()[0]
+    koliko_vseh_avtov, = conn.execute(poizvedba).fetchone()
+    return koliko_vseh_avtov
 
 def koliko_avtov(vnos):
     """
