@@ -7,6 +7,27 @@ conn = sqlite3.connect('Evidenca_avtomobilov.db')
 baza.ustvari_bazo_ce_ne_obstaja(conn)
 conn.execute("PRAGMA foreign_keys = ON")
 
+def znamke():
+    '''vrne vse znamke avtomobilov'''
+    poizvedba = """
+    SELECT DISTINCT znamka
+    FROM model
+    ORDER BY znamka
+    """
+    znamka = conn.execute(poizvedba).fetchall()
+    return znamka
+
+def znamke_avtomobilov(znamka):
+    '''vrne vse avtomobile iste znamke'''
+    poizvedba = """
+        SELECT model, oblika, letnik, barva, gorivo
+        FROM vozilo
+        JOIN model ON (model.id = vozilo.model)
+        WHERE znamka = ?
+        ORDER BY letnik DESC"""
+    znamke = conn.execute(poizvedba, [znamka]).fetchall()
+    return znamka, znamke
+
 def mozna_leta():
     '''vrne vse letnike avtomobilov'''
     poizvedba = """
@@ -19,10 +40,11 @@ def mozna_leta():
 def letnice_avtomobilov(letnik):
     '''vrne vse avtomobile istega letnika'''
     poizvedba = """
-        SELECT *
+        SELECT znamka, model, oblika, letnik, barva, gorivo
         FROM vozilo
+        JOIN model ON (model.id = vozilo.model)
         WHERE letnik = ?
-        ORDER BY letnik DESC"""
+        ORDER BY znamka, model DESC"""
     vozila = conn.execute(poizvedba, [letnik]).fetchall()
     return letnik, vozila
 

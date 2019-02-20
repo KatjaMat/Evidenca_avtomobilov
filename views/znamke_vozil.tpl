@@ -3,11 +3,10 @@
   Izbirate lahko med:
 </h1>
 <p class="subtitle">
-  
-  %for leto in leta:
+  %for znamka in znamke:
       <ol> 
-      <a href= "/letniki-vozil/{{leto}}/">
-      Avtomobili z letnico {{leto}}
+      <a href= "/znamke-vozil/{{znamka}}/">
+      {{znamka}}
       </a> 
       </ol>
   % end
