@@ -6,7 +6,7 @@
   <p class="subtitle">
   <ol>
   % for znamka, model, oblika, letnik, barva, gorivo in avti:
-    <li> {{znamka}} {{model}} {{oblika}} {{letnik}} {{barva}} {{gorivo}} </li>
+    <li> {{znamka}} {{model}} {{oblika}} {{barva}} {{gorivo}} </li>
   % end
   </ol>
   </p>

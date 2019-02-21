@@ -1,4 +1,4 @@
-from bottle import get,run,template
+from bottle import get, post, run, template, request, redirect
 import modeli
 
 @get('/')
@@ -32,5 +32,51 @@ def letniki_vozil(leto):
     return template('leto_vozilo',
                      leto = leto, avti = avtomobili_z_letnicami,)
 
+@get('/dodaj_vozilo/')
+def dodaj_vozilo():
+    oblika = modeli.seznam_oblik()
+    barve = modeli.seznam_barv()
+    gorivo = modeli.seznam_goriv()
+    return template('dodaj_vozilo',
+                    stevilka_sasije = "",
+                    letnik = "",
+                    oseba = "",
+                    model = "",
+                    oblika=[],
+                    barva=[],
+                    gorivo=[],
+                    vse_oblike = oblika,
+                    vse_barve = barve,
+                    vsa_goriva = gorivo,
+                    napaka=False)
+
+
+@post('/dodaj_vozilo/')
+def dodajanje_vozila():
+    try:
+        id = modeli.dodaj_vozilo(
+                    stevilka_sasije = request.forms.stevilka_sasije,
+                    letnik = request.forms.letnik,
+                    oseba = request.forms.oseba,
+                    model = request.forms.model,
+                    oblika = request.forms.getall('oblika'),
+                    barva=request.forms.getall('barva'),
+                    gorivo=request.forms.getall('gorivo'))
+    except:
+        oblika = modeli.seznam_oblik()
+        barve = modeli.seznam_barv()
+        gorivo = modeli.seznam_goriv()
+        return template('dodaj_vozilo',
+                    letnik = request.forms.letnik,
+                    oseba = request.forms.oseba,
+                    model = request.forms.model,
+                    oblika = request.forms.getall('oblika'),
+                    barva=request.forms.getall('barva'),
+                    gorivo=request.forms.getall('gorivo'),
+                    vse_barve = barve,
+                    vse_oblike = oblika,
+                    vsa_goriva = gorivo,
+                    napaka=True)
+    redirect('/vozilo/{}/'.format(id))
 
 run(reloader=True,debug=True)

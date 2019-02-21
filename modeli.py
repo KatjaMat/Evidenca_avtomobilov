@@ -106,3 +106,25 @@ def znamke_podjetja(ime_podjetja):
     #   WHERE ime LIKE ?
     #"""
     return [znamka for znamka, in conn.execute(poizvedba,['%' + ime_podjetja + '%']).fetchall()]
+
+def seznam_oblik():
+    poizvedba = """
+        SELECT oblika FROM model
+        ORDER BY oblika
+    """
+    return conn.execute(poizvedba).fetchall()
+
+
+def seznam_barv():
+    poizvedba = """
+        SELECT DISTINCT barva FROM vozilo
+        ORDER BY barva
+    """
+    return conn.execute(poizvedba).fetchall()
+
+def seznam_goriv():
+    poizvedba = """
+        SELECT DISTINCT gorivo FROM vozilo
+        ORDER BY gorivo
+    """
+    return conn.execute(poizvedba).fetchall()
