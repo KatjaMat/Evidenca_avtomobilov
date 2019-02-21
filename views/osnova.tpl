@@ -9,7 +9,6 @@
   </head>
   <body>
     <a href = "/" class="button is outlined">Domov</a>
-
   <section class="section">
     <div class="container">
     {{! base }}
