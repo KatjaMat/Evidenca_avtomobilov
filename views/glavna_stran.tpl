@@ -8,15 +8,12 @@ Izbirate lahko lahko med:
 </large>
 <p>
 <a href="/letniki-vozil/">
-  <button>
-  Vozila po letih
-  </button>
+<button class="button is-outlined">Vozila po letih</button>
 </a>
 </p>
+
 <p>
 <a href="/znamke-vozil/">
-  <button>
-  Vozila po znamkah
-  </button>
+<button class="button is-outlined">Vozila po znamkah</button>
 <a>
 </p>

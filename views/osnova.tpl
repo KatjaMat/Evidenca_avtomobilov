@@ -8,6 +8,8 @@
     <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
   </head>
   <body>
+    <a href = "/" class="button is outlined">Domov</a>
+
   <section class="section">
     <div class="container">
     {{! base }}
