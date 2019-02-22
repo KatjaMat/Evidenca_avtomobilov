@@ -20,7 +20,7 @@ def znamke():
 def znamke_avtomobilov(znamka):
     '''vrne vse avtomobile iste znamke'''
     poizvedba = """
-        SELECT model, oblika, letnik, barva, gorivo
+        SELECT model, oblika, letnik, barva, gorivo, oseba
         FROM vozilo
         JOIN model ON (model.id = vozilo.model)
         WHERE znamka = ?
@@ -40,7 +40,7 @@ def mozna_leta():
 def letnice_avtomobilov(letnik):
     '''vrne vse avtomobile istega letnika'''
     poizvedba = """
-        SELECT znamka, model, oblika, letnik, barva, gorivo
+        SELECT znamka, model, oblika, letnik, barva, gorivo, oseba
         FROM vozilo
         JOIN model ON (model.id = vozilo.model)
         WHERE letnik = ?
@@ -159,4 +159,13 @@ def podatki_vozila(stevilka_sasije):
     else:
         znamka, letnik, barva, gorivo, oseba, model = osnovni_podatki
         return znamka, letnik, barva, gorivo, oseba, model
-    
+
+def podatki_osebe(oseba):
+    '''vrne vse podatke osebe, ki je lastnik nekega vozila'''
+    poizvedba = """
+    SELECT ime, priimek, naslov, telefon 
+    FROM oseba
+    JOIN vozilo ON (vozilo.oseba = oseba.id)
+    WHERE oseba = ?
+    """
+    return conn.execute(poizvedba, [oseba]).fetchone()

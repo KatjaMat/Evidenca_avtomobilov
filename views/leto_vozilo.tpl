@@ -11,19 +11,21 @@
       <th>oblika</th>
       <th>barva</th>
       <th>gorivo</th>
+      <th>oseba</th>
     </tr>
     </thead>
   <p class="subtitle">
-  % for znamka, model, oblika, letnik, barva, gorivo in avti:
+  % for podatki in avti:
   <tr>
-      <td>{{znamka}}</td>
-      <td>{{model}}</td>
-      <td>{{oblika}}</td>
-      <td>{{barva}}</td>
-      <td>{{gorivo}}</td>
+      <td>{{podatki[0]}}</td>
+      <td>{{podatki[1]}}</td>
+      <td>{{podatki[2]}}</td>
+      <td>{{podatki[4]}}</td>
+      <td>{{podatki[5]}}</td>
+      <td><a href="/letniki-vozil/{{leto}}/{{podatki[6]}}/">{{podatki[6]}}</a></td>
   </tr>
-  </table>
   % end
+  </table>
   </p>
 %else:
 <h1 class="title">

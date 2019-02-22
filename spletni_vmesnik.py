@@ -33,6 +33,18 @@ def letniki_vozil(leto):
     return template('leto_vozilo',
                      leto = leto, avti = avtomobili_z_letnicami,)
 
+@get('/letniki-vozil/<leto:int>/<podatki:int>/')
+def podatki_lastnika(leto,podatki):
+    podatki = modeli.podatki_osebe(podatki)
+    return template('podatki_oseba',podatki = podatki, leto = leto)
+
+@get('/znamke-vozil/<znamke>/<podatki:int>/')
+def podatki_lastnika(znamke,podatki):
+    podatki = modeli.podatki_osebe(podatki)
+    return template('podatki_oseba',podatki = podatki, znamke = znamke)
+
+
+
 @get('/dodaj-vozilo/')
 def dodaj_vozilo():
     oblika = modeli.seznam_oblik()
@@ -96,5 +108,7 @@ def podatki_vozila(stevilka_sasije):
         oseba = oseba,
         model = model
     )
+
+
 
 run(reloader=True,debug=True)
