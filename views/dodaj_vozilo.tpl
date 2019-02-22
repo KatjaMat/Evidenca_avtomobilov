@@ -15,21 +15,21 @@ Model: <input type="text" name="model"  value="{{model}}" /><br />
 
 Barva: <select name="barva">
 % for barva in vse_barve:
-    <option value="vse_barve[0]" {{'selected' if str(vse_barve[0]) in barva else ''}}>{{barva[0]}}</option>
+    <option value="{{barva[0]}}" {{'selected' if str(vse_barve[0]) in barva else ''}}>{{barva[0]}}</option>
 % end
 </select>
 <br />
 
 Gorivo: <select name="gorivo">
 % for gorivo in vsa_goriva:
-    <option value="vsa_goriva[0]" {{'selected' if str(vsa_goriva[0]) in gorivo else ''}}>{{gorivo[0]}}</option>
+    <option value="{{gorivo[0]}}" {{'selected' if str(vsa_goriva[0]) in gorivo else ''}}>{{gorivo[0]}}</option>
 % end
 </select>
 <br />
 
 Oblike: <select name="oblika">
 % for oblika in vse_oblike:
-    <option value="{{vse_oblike[0]}}" {{'selected' if str(vse_oblike[0]) in oblika else ''}}>{{oblika[0]}}</option>
+    <option value="{{oblika[0]}}" {{'selected' if str(oblika[0]) in oblika else ''}}>{{oblika[0]}}</option>
 % end
 </select>
 <br />
