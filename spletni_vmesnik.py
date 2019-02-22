@@ -43,7 +43,16 @@ def podatki_lastnika(znamke,podatki):
     podatki = modeli.podatki_osebe(podatki)
     return template('podatki_oseba',podatki = podatki, znamke = znamke)
 
-
+# @get('/iskanje/')
+# def iskanje():
+#     niz = request.query.naslov
+#     idji_vozil = modeli.poisci_vozila(niz)
+#     vozila = [(stevilka_sasije, letnik, barva, gorivo, model, znamka, '/vozila/{}/'.format(stevilka_sasije)) for (stevilka_sasije, letnik, barva, gorivo, model, znamka) in modeli.podatki_vozil(stevilka_sasije)]
+#     return template(
+#         'rezultati_iskanja',
+#         niz=niz,
+#         vozila=vozila,
+#     )
 
 @get('/dodaj-vozilo/')
 def dodaj_vozilo():

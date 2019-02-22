@@ -17,6 +17,30 @@ def znamke():
     znamka = conn.execute(poizvedba).fetchall()
     return znamka
 
+def poisci_vozila(niz):
+    """
+    Funkcija, ki vrne šifre vseh vozil, katerih znamka vsebuje dani niz.
+    """
+    poizvedba = """
+        SELECT stevilka_sasije
+        FROM vozilo
+        JOIN model ON (model.id = vozilo.model)
+        WHERE znamka LIKE ?
+    """
+    return [st for (st,) in conn.execute(poizvedba, ['%' + niz + '%'])]
+
+def podatki_filmov(idji):
+    """
+    Vrne osnovne podatke vseh vozil z danimi stevilkami sasij
+    """
+    poizvedba = """
+        SELECT stevilka_sasije, letnik, barva, gorivo, model, znamka
+        FROM vozilo
+        JOIN model ON (model.id = vozilo.model)
+        WHERE stevilka_sasije IN ({})
+    """.format(', '.join(len(idji) * ['?']))
+    return conn.execute(poizvedba, idji).fetchall()
+
 def znamke_avtomobilov(znamka):
     '''vrne vse avtomobile iste znamke'''
     poizvedba = """
