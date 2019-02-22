@@ -4,33 +4,35 @@
 <p>Prišlo je do napake!</p>
 % end
 
+<p class="subtitle">Tukaj lahko dodate novo vozilo v bazo:</p>
 
 <form method="post">
-Številka šasije: <input type="text" name="stevilka_sasije" value="{{stevilka_sasije}}" /><br />
-Letnik: <input type="text" name="letnik" value="{{letnik}}" /><br />
+Številka šasije: <input type="integer" name="stevilka_sasije" value="{{stevilka_sasije}}" /><br />
+Znamka: <input type="text" name="znamka" value="{{znamka}}" /><br />
+Letnik: <input type="integer" name="letnik" value="{{letnik}}" /><br />
 Oseba: <input type="text" name="oseba" value="{{oseba}}" /><br />
 Model: <input type="text" name="model"  value="{{model}}" /><br />
 
 Barva: <select name="barva">
-% for id, barva in vse_barve:
-    <option value="{{id}}" {{'selected' if str(id) in barva else ''}}>{{barva}}</option>
+% for barva in vse_barve:
+    <option value="vse_barve[0]" {{'selected' if str(vse_barve[0]) in barva else ''}}>{{barva[0]}}</option>
 % end
 </select>
 <br />
 
 Gorivo: <select name="gorivo">
-% for id, gorivo in vsa_goriva:
-    <option value="{{id}}" {{'selected' if str(id) in gorivo else ''}}>{{gorivo}}</option>
+% for gorivo in vsa_goriva:
+    <option value="vsa_goriva[0]" {{'selected' if str(vsa_goriva[0]) in gorivo else ''}}>{{gorivo[0]}}</option>
 % end
 </select>
 <br />
 
 Oblike: <select name="oblika">
-% for id, oblika in vse_oblike:
-    <option value="{{id}}" {{'selected' if str(id) in oblika else ''}}>{{oblika}}</option>
+% for oblika in vse_oblike:
+    <option value="{{vse_oblike[0]}}" {{'selected' if str(vse_oblike[0]) in oblika else ''}}>{{oblika[0]}}</option>
 % end
 </select>
 <br />
 
-<input type="submit" value="Dodaj film">
+<input type="submit" value="Dodaj vozilo">
 </form>

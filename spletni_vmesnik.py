@@ -1,5 +1,6 @@
 from bottle import get, post, run, template, request, redirect
 import modeli
+import hashlib
 
 @get('/')
 def glavna_stran():
@@ -32,7 +33,7 @@ def letniki_vozil(leto):
     return template('leto_vozilo',
                      leto = leto, avti = avtomobili_z_letnicami,)
 
-@get('/dodaj_vozilo/')
+@get('/dodaj-vozilo/')
 def dodaj_vozilo():
     oblika = modeli.seznam_oblik()
     barve = modeli.seznam_barv()
@@ -42,16 +43,17 @@ def dodaj_vozilo():
                     letnik = "",
                     oseba = "",
                     model = "",
-                    oblika=[],
-                    barva=[],
-                    gorivo=[],
+                    znamka = "",
+                    barva="",
+                    gorivo="",
+                    oblika="",
                     vse_oblike = oblika,
                     vse_barve = barve,
                     vsa_goriva = gorivo,
                     napaka=False)
 
 
-@post('/dodaj_vozilo/')
+@post('/dodaj-vozilo/')
 def dodajanje_vozila():
     try:
         id = modeli.dodaj_vozilo(
@@ -59,16 +61,19 @@ def dodajanje_vozila():
                     letnik = request.forms.letnik,
                     oseba = request.forms.oseba,
                     model = request.forms.model,
-                    oblika = request.forms.getall('oblika'),
-                    barva=request.forms.getall('barva'),
-                    gorivo=request.forms.getall('gorivo'))
+                    znamka = request.forms.znamka,
+                    barva=request.forms.barva,
+                    gorivo=request.forms.gorivo,
+                    oblika = request.forms.oblika)
     except:
         oblika = modeli.seznam_oblik()
         barve = modeli.seznam_barv()
         gorivo = modeli.seznam_goriv()
         return template('dodaj_vozilo',
+                    stevilka_sasije = request.forms.stevilka_sasije,
                     letnik = request.forms.letnik,
                     oseba = request.forms.oseba,
+                    znamka = request.forms.znamka,
                     model = request.forms.model,
                     oblika = request.forms.getall('oblika'),
                     barva=request.forms.getall('barva'),
@@ -78,5 +83,18 @@ def dodajanje_vozila():
                     vsa_goriva = gorivo,
                     napaka=True)
     redirect('/vozilo/{}/'.format(id))
+
+@get('/vozilo/<stevilka_sasije:int>/')
+def podatki_vozila(stevilka_sasije):
+    znamka, letnik, barva, gorivo, oseba, model = modeli.podatki_vozila(stevilka_sasije)
+    return template(
+        'vozilo',
+        znamka = znamka,
+        letnik = letnik,
+        barva = barva,
+        gorivo = gorivo,
+        oseba = oseba,
+        model = model
+    )
 
 run(reloader=True,debug=True)

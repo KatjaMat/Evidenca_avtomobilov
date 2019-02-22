@@ -7,6 +7,7 @@
     <table class="table">
     <thead>
     <tr>
+      <th>model</th>
       <th>oblika</th>
       <th>letnik</th>
       <th>barva</th>
@@ -15,6 +16,7 @@
     </thead>
       % for podatki  in avtomobili_znamk:
       <tr>
+      <td>{{podatki[0]}}</td>
       <td>{{podatki[1]}}</td>
       <td>{{podatki[2]}}</td>
       <td>{{podatki[3]}}</td>

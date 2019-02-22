@@ -109,7 +109,7 @@ def znamke_podjetja(ime_podjetja):
 
 def seznam_oblik():
     poizvedba = """
-        SELECT oblika FROM model
+        SELECT DISTINCT oblika FROM model
         ORDER BY oblika
     """
     return conn.execute(poizvedba).fetchall()
@@ -128,3 +128,35 @@ def seznam_goriv():
         ORDER BY gorivo
     """
     return conn.execute(poizvedba).fetchall()
+
+def dodaj_vozilo(stevilka_sasije, letnik, oseba, model, znamka, barva, gorivo, oblika):
+    """
+    V bazo doda vozilo ter podatke njegove podatke
+    """
+    with conn:
+        id = conn.execute("""
+            INSERT INTO vozilo (stevilka_sasije, letnik, barva, gorivo,
+                            oseba, model)
+                            VALUES (?, ?, ?, ?, ?, ?)
+        """, [stevilka_sasije, letnik, barva, gorivo, oseba, model]).lastrowid
+        conn.execute("INSERT INTO model (oblika,znamka) VALUES (?, ?)",
+                         [oblika, znamka])
+        return id
+
+def podatki_vozila(stevilka_sasije):
+    """Vrne vse podatke vozila z dano stevilko sasije"""
+    poizvedba = """
+    SELECT znamka, letnik, barva, gorivo, oseba, model
+    FROM vozilo
+    JOIN model on (model.id = vozilo.model)
+    WHERE stevilka_sasije = ?                 
+    """
+    cur = conn.cursor()
+    cur.execute(poizvedba, [stevilka_sasije])
+    osnovni_podatki = cur.fetchone()
+    if osnovni_podatki is None:
+        return None
+    else:
+        znamka, letnik, barva, gorivo, oseba, model = osnovni_podatki
+        return znamka, letnik, barva, gorivo, oseba, model
+    

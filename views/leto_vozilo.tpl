@@ -3,12 +3,27 @@
   <h1 class="title">
     Avtomobili letnika {{leto}} so:
   </h1>
+  <table class="table">
+    <thead>
+    <tr>
+      <th>znamka</th>
+      <th>model</th>
+      <th>oblika</th>
+      <th>barva</th>
+      <th>gorivo</th>
+    </tr>
+    </thead>
   <p class="subtitle">
-  <ol>
   % for znamka, model, oblika, letnik, barva, gorivo in avti:
-    <li> {{znamka}} {{model}} {{oblika}} {{barva}} {{gorivo}} </li>
+  <tr>
+      <td>{{znamka}}</td>
+      <td>{{model}}</td>
+      <td>{{oblika}}</td>
+      <td>{{barva}}</td>
+      <td>{{gorivo}}</td>
+  </tr>
+  </table>
   % end
-  </ol>
   </p>
 %else:
 <h1 class="title">
