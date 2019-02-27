@@ -34,5 +34,8 @@ Oblike: <select name="oblika">
 </select>
 <br />
 
-<input type="submit" value="Dodaj vozilo">
+<a href="/dodaj_vozilo/">
+<button class="button is-outlined">Dodaj vozilo</button>
+</a>
+
 </form>
